@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Dashboard Admin";
+}
+
+<h1><i class="bi bi-speedometer2"></i> Dashboard Admin</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h6>Sản phẩm</h6>
+                <h2>@ViewBag.TotalProducts</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h6>Đơn hàng</h6>
+                <h2>@ViewBag.TotalOrders</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h6>Khách hàng</h6>
+                <h2>@ViewBag.TotalCustomers</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h6>Danh mục</h6>
+                <h2>@ViewBag.TotalCategories</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a asp-action="Logout" class="btn btn-danger">
+        <i class="bi bi-box-arrow-right"></i> Đăng xuất
+    </a>
+</div>

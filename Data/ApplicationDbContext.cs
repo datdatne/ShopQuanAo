@@ -66,8 +66,17 @@ namespace ShopQuanAo.Data
                     Id = 1,
                     Username = "admin",
                     PasswordHash = "$2a$11$kO3YqZ8qV0jXn3yxLvXHXOxvL4aE5p8KfZvz6YqE3rJ5X4wN7aZYS", // "admin123"
+                   
                     FullName = "Quản trị viên"
-                }
+                } ,
+                  new Admin
+                  {
+                      Id = 2,
+                      Username = "admin",
+                      PasswordHash = "admin123",
+
+                      FullName = "Quản trị viên"
+                  }
                 );
         }
     }
