@@ -42,6 +42,8 @@ namespace ShopQuanAo.Data
                 .HasOne(od => od.Product)
                 .WithMany()
                 .HasForeignKey(od => od.ProductId);
+
+            // Seed Categories
             modelBuilder.Entity<Category>().HasData(
                new Category { Id = 1, Name = "Áo" },
                new Category { Id = 2, Name = "Quần" },
@@ -59,25 +61,16 @@ namespace ShopQuanAo.Data
                 new Product { Id = 6, Name = "Váy dài đỏ", CategoryId = 3, Price = 550000, ImageUrl = "https://via.placeholder.com/300x300?text=Vay+Dai+Do", Stock = 20 }
             );
 
-            // Seed Admin (Password: admin123)
+            // Seed Admin - PASSWORD PLAIN TEXT (CHỈ ĐỂ TEST)
             modelBuilder.Entity<Admin>().HasData(
                 new Admin
                 {
                     Id = 1,
                     Username = "admin",
-                    PasswordHash = "$2a$11$kO3YqZ8qV0jXn3yxLvXHXOxvL4aE5p8KfZvz6YqE3rJ5X4wN7aZYS", // "admin123"
-                   
+                    PasswordHash = "admin123",  // Lưu trực tiếp password
                     FullName = "Quản trị viên"
-                } ,
-                  new Admin
-                  {
-                      Id = 2,
-                      Username = "admin",
-                      PasswordHash = "admin123",
-
-                      FullName = "Quản trị viên"
-                  }
-                );
+                }
+            );
         }
     }
 }

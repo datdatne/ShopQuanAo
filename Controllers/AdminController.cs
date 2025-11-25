@@ -20,18 +20,28 @@ namespace ShopQuanAo.Controllers
             return View();
         }
 
-        // POST: Admin/Login
+        // POST: Admin/Login - PHIÊN BẢN ĐỠN GIẢN
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginViewModel model)
         {
-
             if (ModelState.IsValid)
             {
                 var admin = _context.Admins
                     .FirstOrDefault(a => a.Username == model.Username);
 
-                 return Content(model.Password +"/"+ admin.PasswordHash);
+                // SO SÁNH TRỰC TIẾP - KHÔNG DÙNG BCRYPT
+                if (admin != null && admin.PasswordHash == model.Password)
+                {
+                    // Lưu session
+                    HttpContext.Session.SetInt32("AdminId", admin.Id);
+                    HttpContext.Session.SetString("AdminName", admin.FullName);
+
+                    TempData["Success"] = $"Xin chào, {admin.FullName}!";
+                    return RedirectToAction("Dashboard");
+                }
+
+                ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng");
             }
 
             return View(model);
@@ -50,27 +60,18 @@ namespace ShopQuanAo.Controllers
         // GET: Admin/Dashboard
         public IActionResult Dashboard()
         {
+            // Kiểm tra đăng nhập
+            if (HttpContext.Session.GetInt32("AdminId") == null)
+            {
+                return RedirectToAction("Login");
+            }
+
             ViewBag.TotalProducts = _context.Products.Count();
             ViewBag.TotalCategories = _context.Categories.Count();
             ViewBag.TotalOrders = _context.Orders.Count();
             ViewBag.TotalCustomers = _context.Customers.Count();
 
             return View();
-        }
-        // GET: Admin/TestHash
-        public IActionResult TestHash()
-        {
-            string password = "admin123";
-            string hash = BCrypt.Net.BCrypt.HashPassword(password);
-
-            ViewBag.Password = password;
-            ViewBag.Hash = hash;
-
-            // Test verify
-            bool isValid = BCrypt.Net.BCrypt.Verify(password, hash);
-            ViewBag.IsValid = isValid;
-
-            return Content($"Password: {password}\nHash: {hash}\nVerify: {isValid}");
         }
     }
 }
