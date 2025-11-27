@@ -1,0 +1,125 @@
+﻿@model IEnumerable<ShopQuanAo.Models.Order>
+
+@{
+    ViewData["Title"] = "Quản lý Đơn hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Quản lý Đơn hàng</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index">Dashboard</a></li>
+        <li class="breadcrumb-item active">Đơn hàng</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="bi bi-funnel me-1"></i> Bộ lọc
+        </div>
+        <div class="card-body bg-light">
+            <form method="get" class="row align-items-center">
+                <div class="col-auto">
+                    <label class="fw-bold">Trạng thái đơn hàng:</label>
+                </div>
+                <div class="col-auto">
+                    <select name="status" class="form-select" onchange="this.form.submit()">
+                        <option value="All" selected="@(ViewBag.CurrentStatus == "All")">-- Tất cả đơn hàng --</option>
+                        <option value="Pending" selected="@(ViewBag.CurrentStatus == "Pending")">Chờ xử lý</option>
+                        <option value="Shipping" selected="@(ViewBag.CurrentStatus == "Shipping")">Đang giao hàng</option>
+                        <option value="Completed" selected="@(ViewBag.CurrentStatus == "Completed")">Hoàn thành</option>
+                        <option value="Cancelled" selected="@(ViewBag.CurrentStatus == "Cancelled")">Đã hủy</option>
+                    </select>
+                </div>
+
+                <div class="col-auto ms-3 border-start ps-3">
+                    <span class="fw-bold">
+                        Tổng số đơn hàng: <strong class="text-primary fs-5">@Model.Count()</strong>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="bi bi-table me-1"></i>
+            Danh sách đơn hàng
+        </div>
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <table class="table table-bordered table-hover table-striped align-middle">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th style="width: 80px;">Mã ĐH</th>
+
+                            <th style="width: 220px;">Tên khách hàng</th>
+
+                            <th style="width: 120px;">SĐT</th>
+
+                            <th style="width: 140px;">Ngày đặt</th>
+                            <th style="width: 200px;">Tổng tiền</th>
+                            <th style="width: 190px;">Trạng thái (Cập nhật)</th>
+                            <th style="width: 120px;">Số lượng sp</th>
+                            <th style="width: 120px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center fw-bold">#@item.Id</td>
+
+                                <td class="fw-bold">@item.Customer?.FullName</td>
+
+                                <td class="text-center">@item.Customer?.Phone</td>
+
+                                <td class="text-center">@item.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td class="text-end text-danger fw-bold">
+                                    @item.TotalAmount.ToString("N0") đ
+                                </td>
+
+                                <td>
+                                    <form asp-action="UpdateStatus" method="post">
+                                        <input type="hidden" name="id" value="@item.Id" />
+
+                                        @{
+                                            string statusClass = "";
+                                            if (item.Status == "Pending") statusClass = "border-warning text-warning";
+                                            else if (item.Status == "Shipping") statusClass = "border-primary text-primary";
+                                            else if (item.Status == "Completed") statusClass = "border-success text-success";
+                                            else if (item.Status == "Cancelled") statusClass = "border-danger text-danger";
+                                        }
+
+                                        <select name="status" class="form-select form-select-sm fw-bold @statusClass" onchange="this.form.submit()">
+                                            <option value="Pending" selected="@(item.Status == "Pending")">Chờ xử lý</option>
+                                            <option value="Shipping" selected="@(item.Status == "Shipping")">Đang giao</option>
+                                            <option value="Completed" selected="@(item.Status == "Completed")">Hoàn thành</option>
+                                            <option value="Cancelled" selected="@(item.Status == "Cancelled")">Đã hủy</option>
+                                        </select>
+                                    </form>
+                                </td>
+
+                                <td class="text-center fw-bold">
+                                    @(item.OrderDetails?.Sum(od => od.Quantity) ?? 0)
+                                </td>
+
+                                <td class="text-center">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info text-white">
+                                        <i class="bi bi-eye"></i> Chi tiết
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info text-center">
+                    Không tìm thấy đơn hàng nào với trạng thái này.
+                </div>
+            }
+        </div>
+    </div>
+</div>

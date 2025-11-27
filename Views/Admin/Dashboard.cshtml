@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Dashboard Admin";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; // Quan trọng: Phải tạo layout này ở bước 2
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4"><i class="bi bi-speedometer2"></i> Dashboard Admin</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Tổng quan hệ thống</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">
+                    <h6>Sản phẩm</h6>
+                    <h2>@ViewBag.TotalProducts</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="AdminProducts" asp-action="Index">Xem chi tiết</a>
+                    <div class="small text-white"><i class="bi bi-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">
+                    <h6>Đơn hàng</h6>
+                    <h2>@ViewBag.TotalOrders</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="AdminOrders" asp-action="Index">Xem chi tiết</a>
+                    <div class="small text-white"><i class="bi bi-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-info text-white mb-4">
+                <div class="card-body">
+                    <h6>Khách hàng</h6>
+                    <h2>@ViewBag.TotalCustomers</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="AdminCustomers" asp-action="Index">Xem chi tiết</a>
+                    <div class="small text-white"><i class="bi bi-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-warning text-white mb-4">
+                <div class="card-body">
+                    <h6>Danh mục</h6>
+                    <h2>@ViewBag.TotalCategories</h2>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="AdminCategories" asp-action="Index">Xem chi tiết</a>
+                    <div class="small text-white"><i class="bi bi-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿## Ignore Visual Studio temporary files, build results
+.vs/
+bin/
+obj/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Bb]uild/
+[Oo]ut/
+
+# NuGet Packages
+*.nupkg
+packages/
+*.nuget.props
+*.nuget.targets
+
+# Visual Studio cache/options
+.vs/
+.vscode/
+
+# Sensitive data
+appsettings.json
+appsettings.Development.json
+*.config
+
+# Database
+*.db
+*.db-shm
+*.db-wal

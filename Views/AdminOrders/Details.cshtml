@@ -1,0 +1,108 @@
+﻿@model ShopQuanAo.Models.Order
+
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h2 class="mt-4">Chi tiết đơn hàng #@Model.Id</h2>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index">Danh sách đơn hàng</a></li>
+        <li class="breadcrumb-item active">Chi tiết</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header fw-bold">
+                    <i class="bi bi-person-lines-fill me-1"></i> Thông tin khách hàng
+                </div>
+                <div class="card-body">
+                    <p><strong>Họ tên:</strong> @Model.Customer?.FullName</p>
+                    <p><strong>Số điện thoại:</strong> @Model.Customer?.Phone</p>
+                    <p><strong>Địa chỉ giao:</strong> @Model.Customer?.Address</p>
+                    <hr />
+                    <p><strong>Ngày đặt:</strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
+                    <p>
+                        <strong>Trạng thái:</strong>
+                        @if (Model.Status == "Completed")
+                        {
+                            <span class="badge bg-success">Hoàn thành</span>
+                        }
+                        else if (Model.Status == "Shipping")
+                        {
+
+                            <span class="badge bg-primary">Đang giao</span>
+                        }
+                        else if (Model.Status == "Cancelled")
+                        {
+
+                            <span class="badge bg-danger">Đã hủy</span>
+                        }
+                        else
+                        {
+
+                            <span class="badge bg-warning text-dark">@Model.Status</span>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header fw-bold">
+                    <i class="bi bi-box-seam me-1"></i> Sản phẩm trong đơn
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th style="width: 80px;" class="text-center">Mã SP</th>
+                                <th>Sản phẩm</th>
+                                <th class="text-center">Ảnh</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-end">Đơn giá</th>
+                                <th class="text-end">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderDetails)
+                            {
+                                <tr>
+                                    <td class="text-center fw-bold text-secondary">#@item.Product?.Id</td>
+
+                                    <td class="fw-bold">@item.Product?.Name</td>
+                                    <td class="text-center">
+                                        @if (item.Product != null && !string.IsNullOrEmpty(item.Product.ImageUrl))
+                                        {
+                                            <img src="@item.Product.ImageUrl" style="width: 50px; height: 50px; object-fit: cover;" class="img-thumbnail" />
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">No Image</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">@item.Quantity</td>
+                                    <td class="text-end">@item.Price.ToString("N0") đ</td>
+                                    <td class="text-end fw-bold text-primary">@((item.Quantity * item.Price).ToString("N0")) đ</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-light">
+                                <td colspan="5" class="text-end fw-bold fs-5">TỔNG CỘNG:</td>
+                                <td class="text-end text-danger fw-bold fs-5">@Model.TotalAmount.ToString("N0") đ</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <a asp-action="Index" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Quay lại danh sách</a>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+﻿@model List<ShopQuanAo.Models.Product>
+
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<div class="text-center mb-5">
+    <h1 class="display-4">Chào mừng đến Shop Quần Áo</h1>
+    <p class="lead">Thời trang cho mọi người</p>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h2>Sản phẩm nổi bật</h2>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" style="height: 250px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text">
+                        <span class="badge bg-secondary">@product.Category.Name</span>
+                    </p>
+                    <p class="card-text">
+                        <strong class="text-danger">@product.Price.ToString("N0") VNĐ</strong>
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">Còn lại: @product.Stock</small>
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id"
+                       class="btn btn-primary w-100">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="text-center mt-4">
+    <a asp-controller="Products" asp-action="Index" class="btn btn-outline-primary btn-lg">
+        Xem tất cả sản phẩm
+    </a>
+</div>

@@ -1,0 +1,142 @@
+﻿@model IEnumerable<ShopQuanAo.Models.Order>
+
+@{
+    ViewData["Title"] = "Dashboard Admin";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4"><i class="bi bi-speedometer2"></i> Dashboard Admin</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Tổng quan hệ thống</li>
+    </ol>
+
+    <div class="row row-cols-1 row-cols-md-5 g-3">
+
+        <div class="col">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <h5>Sản phẩm</h5>
+                    <h3 class="display-6 fs-2">@ViewBag.CountProducts</h3>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="AdminProducts" asp-action="Index">Chi tiết</a>
+                    <div class="small text-white"><i class="bi bi-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <h5>Danh mục</h5>
+                    <h3 class="display-6 fs-2">@ViewBag.CountCategories</h3>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="AdminCategories" asp-action="Index">Chi tiết</a>
+                    <div class="small text-white"><i class="bi bi-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <h5>Đơn hàng</h5>
+                    <h3 class="display-6 fs-2">@ViewBag.CountOrders</h3>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="AdminOrders" asp-action="Index">Chi tiết</a>
+                    <div class="small text-white"><i class="bi bi-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-warning text-white h-100">
+                <div class="card-body">
+                    <h5>Khách hàng</h5>
+                    <h3 class="display-6 fs-2">@ViewBag.CountUsers</h3>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="AdminCustomers" asp-action="Index">Chi tiết</a>
+                    <div class="small text-white"><i class="bi bi-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-danger text-white h-100">
+                <div class="card-body">
+                    <h5>Doanh thu</h5>
+                    <h3 class="display-6 fs-4">@String.Format("{0:N0}", ViewBag.TotalRevenue) đ</h3>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" asp-controller="AdminStatistics" asp-action="Index">Xem thống kê</a>
+                    <div class="small text-white"><i class="bi bi-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4 mt-4">
+        <div class="card-header">
+            <i class="bi bi-table me-1"></i>
+            5 Đơn hàng mới nhất
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mã ĐH</th>
+                        <th>Khách hàng</th>
+                        <th>Ngày đặt</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold text-center">#@item.Id</td>
+                                <td>
+                                    <strong>@item.Customer?.FullName</strong>
+                                </td>
+                                <td>@item.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td class="text-danger fw-bold">@item.TotalAmount.ToString("N0") đ</td>
+                                <td>
+                                    @if (item.Status == "Completed")
+                                    {
+                                        <span class="badge bg-success">Hoàn thành</span>
+                                    }
+                                    else if (item.Status == "Shipping")
+                                    {
+
+                                        <span class="badge bg-primary">Đang giao</span>
+                                    }
+                                    else if (item.Status == "Cancelled")
+                                    {
+
+                                        <span class="badge bg-danger">Đã hủy</span>
+                                    }
+                                    else
+                                    {
+
+                                        <span class="badge bg-warning text-dark">@item.Status</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="5" class="text-center">Chưa có đơn hàng nào</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

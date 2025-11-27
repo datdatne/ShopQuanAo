@@ -1,0 +1,75 @@
+﻿@model ShopQuanAo.Models.Customer
+
+@{
+    ViewData["Title"] = "Sửa thông tin khách hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Sửa thông tin khách hàng</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index">Danh sách</a></li>
+        <li class="breadcrumb-item active">Sửa</li>
+    </ol>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-warning text-dark fw-bold">
+                    <i class="bi bi-pencil-square me-1"></i>
+                    Cập nhật thông tin
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger">
+                                <strong>Có lỗi xảy ra:</strong>
+                                <div asp-validation-summary="All" class="mb-0 mt-1"></div>
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Tên đăng nhập</label>
+                                    <input asp-for="Username" class="form-control bg-light" readonly />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="FullName" class="form-label fw-bold">Họ và tên</label>
+                                    <input asp-for="FullName" class="form-control" required />
+                                    <span asp-validation-for="FullName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Phone" class="form-label fw-bold">Số điện thoại</label>
+                                    <input asp-for="Phone" class="form-control" required />
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Address" class="form-label fw-bold">Địa chỉ</label>
+                                    <input asp-for="Address" class="form-control" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-3 pt-3 border-top">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-save"></i> Lưu thay đổi
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary px-4">
+                                <i class="bi bi-arrow-left"></i> Quay lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

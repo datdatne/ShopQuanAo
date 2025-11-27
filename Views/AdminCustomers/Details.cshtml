@@ -1,0 +1,93 @@
+﻿@model ShopQuanAo.Models.Customer
+
+@{
+    ViewData["Title"] = "Chi tiết khách hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h2 class="mt-4">Hồ sơ khách hàng</h2>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index">Danh sách</a></li>
+        <li class="breadcrumb-item active">Chi tiết</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white fw-bold">
+                    <i class="bi bi-person-badge"></i> Thông tin cá nhân
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Họ tên:</strong> @Model.FullName</li>
+                        <li class="list-group-item"><strong>Username:</strong> @Model.Username</li>
+                        <li class="list-group-item"><strong>SĐT:</strong> @Model.Phone</li>
+                        <li class="list-group-item"><strong>Địa chỉ:</strong> @Model.Address</li>
+                    </ul>
+
+                    <div class="alert alert-success mt-3 mb-0">
+                        <h6 class="alert-heading"><i class="bi bi-wallet2"></i> Thống kê mua sắm</h6>
+                        <hr>
+                        <p class="mb-1">Tổng đơn hàng: <strong>@ViewBag.OrderCount</strong></p>
+                        <p class="mb-0">Tổng chi tiêu: <strong class="fs-5 text-danger">@ViewBag.TotalSpent.ToString("N0") đ</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-secondary text-white fw-bold">
+                    <i class="bi bi-clock-history"></i> Lịch sử đơn hàng
+                </div>
+                <div class="card-body">
+                    @if (Model.Orders != null && Model.Orders.Any())
+                    {
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Mã ĐH</th>
+                                    <th>Ngày mua</th>
+                                    <th>Trạng thái</th>
+                                    <th>Giá trị</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in Model.Orders.OrderByDescending(o => o.OrderDate))
+                                {
+                                    <tr>
+                                        <td>#@order.Id</td>
+                                        <td>@order.OrderDate.ToString("dd/MM/yyyy")</td>
+                                        <td>
+                                            @if (order.Status == "Completed")
+                                            {
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            }
+                                            else if (order.Status == "Cancelled")
+                                            {
+                                                <span class="badge bg-danger">Đã hủy</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-warning text-dark">@order.Status</span>
+                                            }
+                                        </td>
+                                        <td class="fw-bold">@order.TotalAmount.ToString("N0") đ</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4 text-muted">
+                            <i class="bi bi-inbox fs-1"></i>
+                            <p>Khách hàng này chưa mua đơn hàng nào.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

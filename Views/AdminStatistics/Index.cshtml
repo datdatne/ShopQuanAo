@@ -1,0 +1,235 @@
+﻿@{
+    ViewData["Title"] = "Thống kê doanh thu";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h3 class="mt-3 text-center text-primary fw-bold text-uppercase">
+        <i class="bi bi-bar-chart-line-fill"></i> Báo cáo hiệu quả kinh doanh
+    </h3>
+    <hr class="mt-2 mb-3" />
+
+    <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active fw-bold px-4 py-1" id="pills-revenue-tab" data-bs-toggle="pill" data-bs-target="#pills-revenue" type="button" role="tab">
+                <i class="bi bi-cash-coin me-2"></i> Doanh thu
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold px-4 py-1" id="pills-product-tab" data-bs-toggle="pill" data-bs-target="#pills-product" type="button" role="tab">
+                <i class="bi bi-box-seam me-2"></i> Sản phẩm
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+
+        <div class="tab-pane fade show active" id="pills-revenue" role="tabpanel">
+            <div class="card mb-3 shadow-sm border-0">
+                <div class="card-body bg-light rounded py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-9">
+                            <h6 class="fw-bold text-dark mb-1"><i class="bi bi-calendar-day me-2"></i> Kết quả hôm nay (@DateTime.Now.ToString("dd/MM"))</h6>
+                            <div class="progress" style="height: 20px;">
+                                @{
+                                    var percent = ViewBag.PercentAchieved;
+                                    string color = percent >= 100 ? "bg-success" : (percent >= 50 ? "bg-warning" : "bg-danger");
+                                }
+                                <div class="progress-bar @color progress-bar-striped progress-bar-animated" role="progressbar" style="width: @(percent > 100 ? 100 : percent)%">@percent%</div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-1" style="font-size: 0.9rem;">
+                                <span class="text-success fw-bold">Đạt: @String.Format("{0:N0}", ViewBag.TodayRevenue) đ</span>
+                                <span class="text-secondary">Mục tiêu: @String.Format("{0:N0}", ViewBag.DailyTarget) đ</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-center border-start">
+                            @if (percent >= 100)
+                            {
+                                <h4 class="text-success fw-bold mb-0">ĐẠT KPI! <i class="bi bi-check-circle"></i></h4>
+                            }
+                            else
+                            {
+
+                                <h4 class="text-danger fw-bold mb-0">CỐ LÊN! <i class="bi bi-lightning-charge"></i></h4>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3 shadow-sm">
+                <div class="card-header fw-bold bg-white py-2 small"><i class="bi bi-graph-up text-primary"></i> Biểu đồ Doanh thu (7 ngày qua)</div>
+                <div class="card-body">
+                    <div style="height: 300px;">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white h-100 py-2">
+                        <div class="card-body text-center p-2">
+                            <small>Tổng doanh thu</small>
+                            <h4 class="fw-bold mb-0">@String.Format("{0:N0}", ViewBag.TotalRevenue) đ</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white h-100 py-2">
+                        <div class="card-body text-center p-2">
+                            <small>Đơn thành công</small>
+                            <h4 class="fw-bold mb-0">@ViewBag.SuccessOrders đơn</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-danger text-white h-100 py-2">
+                        <div class="card-body text-center p-2">
+                            <small>Đơn bị hủy</small>
+                            <h4 class="fw-bold mb-0">@ViewBag.CancelledOrders đơn</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white h-100 py-2">
+                        <div class="card-body text-center p-2">
+                            <small>Trung bình/Đơn</small>
+                            <h4 class="fw-bold mb-0">@String.Format("{0:N0}", ViewBag.AvgRevenue) đ</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="pills-product" role="tabpanel">
+
+            <div class="card mb-3 shadow-sm">
+                <div class="card-header fw-bold bg-white py-2 small">
+                    <i class="bi bi-bar-chart-fill text-danger"></i> So sánh: Đã bán vs Tồn kho
+                </div>
+                <div class="card-body">
+                    <div style="overflow-x: auto; width: 100%;">
+                        <div style="width: 1200px; height: 350px;">
+                            <canvas id="productChart"></canvas>
+                        </div>
+                    </div>
+                    <p class="text-center text-muted small mt-1 mb-0">
+                        <i class="bi bi-arrows-move"></i> Kéo ngang để xem thêm
+                    </p>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header fw-bold py-2 small"><i class="bi bi-table"></i> Chi tiết số liệu sản phẩm</div>
+                <div class="card-body p-0">
+                    <table class="table table-bordered table-striped table-sm mb-0 align-middle">
+                        <thead class="table-dark text-center">
+                            <tr>
+                                <th style="width: 60px;">Mã SP</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Đã bán</th>
+                                <th>Tồn kho</th>
+                                <th>Doanh thu</th>
+                                <th>Tình trạng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int sumSold = 0;
+                                int sumStock = 0;
+                                decimal sumRevenue = 0;
+                            }
+
+                            @foreach (var item in ViewBag.ProductListDetail)
+                            {
+                                sumSold += item.Sold;
+                                sumStock += item.Stock;
+                                sumRevenue += item.Revenue;
+
+                                <tr>
+                                    <td class="text-center fw-bold text-secondary">#@item.Id</td>
+
+                                    <td class="fw-bold px-3">@item.Name</td>
+                                    <td class="text-center fw-bold text-primary">@item.Sold</td>
+                                    <td class="text-center">@item.Stock</td>
+                                    <td class="text-end px-3 text-success fw-bold">@String.Format("{0:N0}", item.Revenue) đ</td>
+                                    <td class="text-center">
+                                        @if (item.Stock == 0)
+                                        {
+                                            <span class="badge bg-dark" style="font-size: 0.7rem;">Hết hàng</span>
+                                        }
+                                        else if (item.Stock < 10)
+                                        {
+
+                                            <span class="badge bg-warning text-dark" style="font-size: 0.7rem;">Sắp hết</span>
+                                        }
+                                        else if (item.Sold > 20)
+                                        {
+
+                                            <span class="badge bg-success" style="font-size: 0.7rem;">Bán chạy</span>
+                                        }
+                                        else
+                                        {
+
+                                            <span class="badge bg-secondary" style="font-size: 0.7rem;">Còn hàng</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                        <tfoot class="table-secondary text-dark">
+                            <tr class="fw-bold" style="font-size: 1.1em;">
+                                <td colspan="2" class="text-center text-uppercase p-2">TỔNG CỘNG</td>
+                                <td class="text-center text-primary p-2">@sumSold</td>
+                                <td class="text-center text-danger p-2">@sumStock</td>
+                                <td class="text-end px-3 text-success p-2">@String.Format("{0:N0}", sumRevenue) đ</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    @using Newtonsoft.Json;
+
+    var ctx1 = document.getElementById("revenueChart");
+    new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(JsonConvert.SerializeObject(ViewBag.ChartLabels)),
+            datasets: [
+                { label: "Thực tế", backgroundColor: "rgba(40, 167, 69, 0.8)", data: @Html.Raw(JsonConvert.SerializeObject(ViewBag.ActualRevenue)), order: 2 },
+                { type: 'line', label: "Mục tiêu", borderColor: "rgba(220, 53, 69, 1)", borderDash: [5, 5], fill: false, pointRadius: 0, data: @Html.Raw(JsonConvert.SerializeObject(ViewBag.TargetRevenue)), order: 1 }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+
+    var ctx2 = document.getElementById("productChart");
+    new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(JsonConvert.SerializeObject(ViewBag.ProductNames)),
+            datasets: [
+                { label: "Đã bán", backgroundColor: "rgba(255, 99, 132, 0.7)", data: @Html.Raw(JsonConvert.SerializeObject(ViewBag.ProductSold)) },
+                { label: "Tồn kho", backgroundColor: "rgba(54, 162, 235, 0.7)", data: @Html.Raw(JsonConvert.SerializeObject(ViewBag.ProductStock)) }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+</script>

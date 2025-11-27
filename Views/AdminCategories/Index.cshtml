@@ -1,0 +1,89 @@
+﻿@model IEnumerable<ShopQuanAo.Models.Category>
+@{
+    ViewData["Title"] = "Quản lý Danh mục"; Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Quản lý Danh mục</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index">Dashboard</a></li>
+        <li class="breadcrumb-item active">Danh mục</li>
+    </ol>
+
+    <div class="mb-3"><a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Thêm danh mục mới</a></div>
+
+    <div class="card mb-4">
+        <div class="card-header"><i class="bi bi-tags me-1"></i> Thống kê danh mục</div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th style="width: 50px;">ID</th>
+                        <th style="width: 220px;">Tên danh mục</th>
+                        <th style="width: 135px;">Số mẫu SP</th>
+                        <th style="width: 135px;">Tổng tồn kho</th>
+                        <th style="width: 165px;">Tổng giá trị</th>
+                        <th style="width: 180px;">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var productCount = item.Products?.Count ?? 0;
+                        var totalStock = item.Products?.Sum(p => p.Stock) ?? 0;
+                        var totalValue = item.Products?.Sum(p => p.Price * p.Stock) ?? 0;
+                        <tr>
+                            <td class="text-center fw-bold">#@item.Id</td>
+                            <td class="fw-bold text-primary">@item.Name</td>
+                            <td class="text-center">
+                                @if (productCount > 0)
+                                {
+                                    <span class="badge bg-secondary rounded-pill">@productCount mẫu</span>
+                                }
+                                else
+                                {
+
+                                    <span class="text-muted small">-</span>
+                                }
+                            </td>
+                            <td class="text-center fw-bold">
+                                @if (totalStock > 0)
+                                {
+                                    <span>@totalStock cái</span>
+                                }
+                                else
+                                {
+
+                                    <span class="text-muted small">0</span>
+                                }
+                            </td>
+                            <td class="text-end text-success fw-bold">
+                                @if (totalValue > 0)
+                                {
+                                    <span>@totalValue.ToString("N0") đ</span>
+                                }
+                                else
+                                {
+
+                                    <span class="text-muted small">-</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a asp-controller="AdminProducts" asp-action="Index" asp-route-categoryId="@item.Id"
+                                       class="btn btn-sm btn-info text-white" title="Xem danh sách sản phẩm">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning" title="Sửa"><i class="bi bi-pencil-square"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" onclick="return confirm('Xóa danh mục này?');" title="Xóa"><i class="bi bi-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

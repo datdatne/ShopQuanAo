@@ -1,0 +1,93 @@
+﻿@model ShopQuanAo.Models.Product
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm"; Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h2 class="mt-4">Chi tiết sản phẩm</h2>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index">Danh sách</a></li>
+        <li class="breadcrumb-item active">Chi tiết</li>
+    </ol>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white fw-bold">
+            <i class="bi bi-info-circle-fill me-2"></i> Thông tin: @Model.Name
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 text-center border-end">
+                    <div class="mb-3">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Model.ImageUrl" class="img-fluid rounded shadow-sm" style="max-height: 400px; border: 1px solid #ddd;" />
+                        }
+                        else
+                        {
+                            <div class="alert alert-secondary py-5"><i class="bi bi-image fs-1"></i><p>Chưa có hình ảnh</p></div>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr>
+                                <th style="width: 200px;">ID Sản phẩm</th>
+                                <td class="fw-bold">#@Model.Id</td>
+                            </tr>
+                            <tr>
+                                <th>Tên sản phẩm</th>
+                                <td class="text-primary fw-bold fs-5">@Model.Name</td>
+                            </tr>
+                            <tr>
+                                <th>Danh mục</th>
+                                <td><span class="badge bg-secondary">@Model.Category?.Name</span></td>
+                            </tr>
+                            <tr>
+                                <th>Giá bán</th>
+                                <td class="text-danger fw-bold fs-5">@Model.Price.ToString("N0") đ</td>
+                            </tr>
+                            <tr>
+                                <th>Số lượng tồn kho</th>
+                                <td>
+                                    @if (Model.Stock < 10 && Model.Stock > 0)
+                                    {
+                                        <span class="badge bg-warning text-dark">Sắp hết (@Model.Stock)</span>
+                                    }
+                                    else if (Model.Stock <= 0)
+                                    {
+
+                                        <span class="badge bg-danger">Hết hàng</span>
+                                    }
+                                    else
+                                    {
+
+                                        <span class="badge bg-success">Còn hàng (@Model.Stock)</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Kích cỡ (Size)</th>
+                                <td>@(Model.Size ?? "Chưa cập nhật")</td>
+                            </tr>
+                            <tr>
+                                <th>Chất liệu</th>
+                                <td>@(Model.Material ?? "Chưa cập nhật")</td>
+                            </tr>
+                            <tr>
+                                <th>Mô tả chi tiết</th>
+                                <td style="white-space: pre-line;">@(Model.Description ?? "Chưa có mô tả.")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="mt-4">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning px-4"><i class="bi bi-pencil-square"></i> Chỉnh sửa</a>
+                        <a asp-action="Index" class="btn btn-secondary px-4 ms-2">Quay lại danh sách</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
