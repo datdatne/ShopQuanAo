@@ -12,8 +12,8 @@ using ShopQuanAo.Data;
 namespace ShopQuanAo.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251120022148_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251128043640_V1")]
+    partial class V1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,15 @@ namespace ShopQuanAo.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Admins");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FullName = "Quản trị viên",
+                            PasswordHash = "admin123",
+                            Username = "admin"
+                        });
                 });
 
             modelBuilder.Entity("ShopQuanAo.Models.Category", b =>
@@ -65,6 +74,28 @@ namespace ShopQuanAo.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Áo"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Quần"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Váy"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Phụ kiện"
+                        });
                 });
 
             modelBuilder.Entity("ShopQuanAo.Models.Customer", b =>
@@ -172,8 +203,13 @@ namespace ShopQuanAo.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Material")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -183,6 +219,9 @@ namespace ShopQuanAo.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("Size")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
@@ -191,6 +230,62 @@ namespace ShopQuanAo.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            ImageUrl = "https://via.placeholder.com/300x300?text=Ao+Thun+Trang",
+                            Name = "Áo thun trắng",
+                            Price = 200000m,
+                            Stock = 50
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            ImageUrl = "https://via.placeholder.com/300x300?text=Ao+So+Mi+Xanh",
+                            Name = "Áo sơ mi xanh",
+                            Price = 350000m,
+                            Stock = 30
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 2,
+                            ImageUrl = "https://via.placeholder.com/300x300?text=Quan+Jean+Den",
+                            Name = "Quần jean đen",
+                            Price = 450000m,
+                            Stock = 40
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 2,
+                            ImageUrl = "https://via.placeholder.com/300x300?text=Quan+Kaki+Nau",
+                            Name = "Quần kaki nâu",
+                            Price = 380000m,
+                            Stock = 35
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 3,
+                            ImageUrl = "https://via.placeholder.com/300x300?text=Vay+Hoa",
+                            Name = "Váy hoa",
+                            Price = 420000m,
+                            Stock = 25
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 3,
+                            ImageUrl = "https://via.placeholder.com/300x300?text=Vay+Dai+Do",
+                            Name = "Váy dài đỏ",
+                            Price = 550000m,
+                            Stock = 20
+                        });
                 });
 
             modelBuilder.Entity("ShopQuanAo.Models.Order", b =>

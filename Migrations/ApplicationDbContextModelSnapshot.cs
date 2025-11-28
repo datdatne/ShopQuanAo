@@ -200,7 +200,6 @@ namespace ShopQuanAo.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-<<<<<<< HEAD
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -208,10 +207,6 @@ namespace ShopQuanAo.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Material")
-=======
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
->>>>>>> 48a436eac037c58cf49d38d5ffeb1cd93df6d17b
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -221,12 +216,9 @@ namespace ShopQuanAo.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-<<<<<<< HEAD
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
-=======
->>>>>>> 48a436eac037c58cf49d38d5ffeb1cd93df6d17b
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 

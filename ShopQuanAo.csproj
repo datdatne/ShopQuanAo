@@ -7,12 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
     <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
-=======
-    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
->>>>>>> 48a436eac037c58cf49d38d5ffeb1cd93df6d17b
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,11 +18,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-<<<<<<< HEAD
+
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-=======
-    <PackageReference Include="Newtonsoft.Json" Version="8.0.1" />
->>>>>>> 48a436eac037c58cf49d38d5ffeb1cd93df6d17b
+   
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -30,20 +30,3 @@ namespace ShopQuanAo.Models
         public virtual Category? Category { get; set; }
     }
 }
-=======
-﻿namespace ShopQuanAo.Models
-{
-    public class Product
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int CategoryId { get; set; }
-        public decimal Price { get; set; }
-        public string ImageUrl { get; set; }
-        public int Stock { get; set; }
-
-        // Navigation property
-        public Category Category { get; set; }
-    }
-}
->>>>>>> 48a436eac037c58cf49d38d5ffeb1cd93df6d17b
