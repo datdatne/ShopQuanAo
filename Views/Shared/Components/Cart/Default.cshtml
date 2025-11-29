@@ -1,9 +1,57 @@
 ﻿@model int
 
-<a class="nav-link text-dark" asp-controller="Cart" asp-action="Index">
-    <i class="bi bi-cart"></i> Giỏ hàng
+<a class="nav-link position-relative d-flex align-items-center px-3"
+   asp-controller="Cart" asp-action="Index"
+   style="transition: all 0.3s ease;">
+
+    <i class="bi bi-cart3 fs-5"></i>
+    <span class="ms-2 d-none d-lg-inline">Giỏ hàng</span>
+
     @if (Model > 0)
     {
-        <span class="badge bg-danger">@Model</span>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge-pulse">
+            @Model
+            <span class="visually-hidden">sản phẩm trong giỏ</span>
+        </span>
     }
 </a>
+
+<style>
+    /* Cart Link Hover Effect */
+    .nav-link:has(.bi-cart3):hover {
+        transform: translateY(-2px);
+    }
+
+    /* Cart Badge Animation */
+    .cart-badge-pulse {
+        font-size: 0.65rem;
+        padding: 4px 7px;
+        font-weight: 700;
+        animation: pulse 2s infinite;
+        box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+    }
+
+    /* Pulse Animation */
+   pulse {
+        0%
+
+    {
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        box-shadow: 0 0 0 5px rgba(220, 53, 69, 0);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+    }
+
+    }
+
+    /* Responsive - Hide text on mobile */
+    
+</style>

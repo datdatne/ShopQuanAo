@@ -22,6 +22,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage(); // ← Thêm dòng này nếu chưa có
     app.UseExceptionHandler("/Home/Error");
 }
 app.UseStaticFiles(); // Cho phep dung css,js,image

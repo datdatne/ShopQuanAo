@@ -4,47 +4,656 @@
     ViewData["Title"] = "Trang chủ";
 }
 
-<div class="text-center mb-5">
-    <h1 class="display-4">Chào mừng đến Shop Quần Áo</h1>
-    <p class="lead">Thời trang cho mọi người</p>
-</div>
+<style>
+    /* Fix khoảng trắng */
+    body {
+        margin: 0 !important;
+    }
 
-<div class="row mb-4">
-    <div class="col-md-12">
-        <h2>Sản phẩm nổi bật</h2>
-        <hr />
-    </div>
-</div>
+    header {
+        margin: 0 !important;
+    }
 
-<div class="row">
-    @foreach (var product in Model)
-    {
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" style="height: 250px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">@product.Name</h5>
-                    <p class="card-text">
-                        <span class="badge bg-secondary">@product.Category.Name</span>
+    main {
+        margin: 0 !important;
+    }
+
+    .container {
+        margin-top: 0 !important;
+    }
+</style>
+
+<!-- Hero banner bắt đầu từ đây... -->
+<!-- HERO BANNER COMPACT -->
+<div class="hero-banner-compact">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <h1 class="hero-title-compact" data-aos="fade-up">
+                        Thời Trang Cao Cấp<br>
+                        <span class="text-gradient">Phong Cách Hiện Đại</span>
+                    </h1>
+                    <p class="hero-subtitle-compact" data-aos="fade-up" data-aos-delay="100">
+                        Khám phá bộ sưu tập mới nhất - Chất lượng đỉnh cao - Giá tốt nhất thị trường
                     </p>
-                    <p class="card-text">
-                        <strong class="text-danger">@product.Price.ToString("N0") VNĐ</strong>
-                    </p>
-                    <p class="card-text">
-                        <small class="text-muted">Còn lại: @product.Stock</small>
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id"
-                       class="btn btn-primary w-100">Xem chi tiết</a>
+                    <div class="hero-buttons-compact" data-aos="fade-up" data-aos-delay="200">
+                        <a asp-controller="Products" asp-action="Index" class="btn btn-hero-primary-compact me-2">
+                            <i class="bi bi-shop me-2"></i> Mua sắm ngay
+                        </a>
+                        
+                        @if (Context.Session.GetInt32("CustomerId") == null)
+                        {
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-hero-outline-compact">
+                                <i class="bi bi-person-circle me-2"></i> Đăng nhập
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Profile" class="btn btn-hero-outline-compact">
+                                <i class="bi bi-person-check me-2"></i> Tài khoản
+                            </a>
+                        }
+                    </div>
+
+                    <!-- Trust Badges -->
+                    <div class="trust-badges-compact mt-3" data-aos="fade-up" data-aos-delay="300">
+                        <div class="badge-item-compact">
+                            <i class="bi bi-shield-check"></i>
+                            <span>Chính hãng 100%</span>
+                        </div>
+                        <div class="badge-item-compact">
+                            <i class="bi bi-truck"></i>
+                            <span>Giao hàng nhanh</span>
+                        </div>
+                        <div class="badge-item-compact">
+                            <i class="bi bi-arrow-repeat"></i>
+                            <span>Đổi trả 7 ngày</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    }
+    </div>
 </div>
 
-<div class="text-center mt-4">
-    <a asp-controller="Products" asp-action="Index" class="btn btn-outline-primary btn-lg">
-        Xem tất cả sản phẩm
-    </a>
-</div>
+<!-- CATEGORY SECTION WITH REAL IMAGES -->
+<section class="category-section py-4">
+    <div class="container">
+        <div class="text-center mb-4" data-aos="fade-up">
+            <h2 class="section-title-compact">Danh mục nổi bật</h2>
+            <p class="section-subtitle-compact">Khám phá các bộ sưu tập được yêu thích nhất</p>
+        </div>
+
+        <div class="row g-3">
+            <!-- MEN CATEGORY -->
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <a asp-controller="Products" asp-action="Index" asp-route-categoryId="1" class="category-card-compact">
+                    <div class="category-image-compact">
+                        <img src="https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=400&h=450&fit=crop" 
+                             alt="Nam">
+                        <div class="category-overlay-compact">
+                            <h3 class="category-name-compact">Thời trang Nam</h3>
+                            <p class="category-desc-compact">Phong cách lịch lãm</p>
+                            <span class="category-btn-compact">Xem ngay <i class="bi bi-arrow-right ms-1"></i></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- WOMEN CATEGORY -->
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                <a asp-controller="Products" asp-action="Index" asp-route-categoryId="3" class="category-card-compact">
+                    <div class="category-image-compact">
+                        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&h=450&fit=crop" 
+                             alt="Nữ">
+                        <div class="category-overlay-compact">
+                            <h3 class="category-name-compact">Thời trang Nữ</h3>
+                            <p class="category-desc-compact">Sang trọng quyến rũ</p>
+                            <span class="category-btn-compact">Xem ngay <i class="bi bi-arrow-right ms-1"></i></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- PANTS CATEGORY -->
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                <a asp-controller="Products" asp-action="Index" asp-route-categoryId="2" class="category-card-compact">
+                    <div class="category-image-compact">
+                        <img src="https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&h=450&fit=crop" 
+                             alt="Quần">
+                        <div class="category-overlay-compact">
+                            <h3 class="category-name-compact">Quần</h3>
+                            <p class="category-desc-compact">Năng động hiện đại</p>
+                            <span class="category-btn-compact">Xem ngay <i class="bi bi-arrow-right ms-1"></i></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- ACCESSORIES CATEGORY -->
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+                <a asp-controller="Products" asp-action="Index" asp-route-categoryId="4" class="category-card-compact">
+                    <div class="category-image-compact">
+                        <img src="https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?w=400&h=450&fit=crop" 
+                             alt="Phụ kiện">
+                        <div class="category-overlay-compact">
+                            <h3 class="category-name-compact">Phụ kiện</h3>
+                            <p class="category-desc-compact">Hoàn thiện phong cách</p>
+                            <span class="category-btn-compact">Xem ngay <i class="bi bi-arrow-right ms-1"></i></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED PRODUCTS SECTION -->
+<section class="featured-products py-4 bg-light">
+    <div class="container">
+        <div class="text-center mb-4" data-aos="fade-up">
+            <h2 class="section-title-compact">
+                <i class="bi bi-stars me-2"></i> Sản phẩm nổi bật
+            </h2>
+            <p class="section-subtitle-compact">Những sản phẩm mới nhất và được yêu thích nhất</p>
+        </div>
+
+        <div class="row g-3">
+            @foreach (var product in Model)
+            {
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="@(Model.IndexOf(product) * 100)">
+                    <div class="product-card-compact">
+                        @if (product.Stock < 10 && product.Stock > 0)
+                        {
+                            <span class="product-badge-compact badge-warning">
+                                <i class="bi bi-fire me-1"></i> Sắp hết
+                            </span>
+                        }
+                        else if (product.Stock > 50)
+                        {
+                            <span class="product-badge-compact badge-hot">
+                                <i class="bi bi-lightning-fill me-1"></i> Hot
+                            </span>
+                        }
+                        
+                        <div class="product-image-wrapper-compact">
+                            <img src="@product.ImageUrl" class="product-image-compact" alt="@product.Name">
+                            <div class="product-overlay-compact">
+                                <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" 
+                                   class="btn btn-view-product-compact">
+                                    <i class="bi bi-eye me-1"></i> Xem chi tiết
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="product-info-compact">
+                            <span class="product-category-compact">@product.Category.Name</span>
+                            <h5 class="product-name-compact">@product.Name</h5>
+                            
+                            <div class="product-price-row-compact">
+                                <span class="product-price-compact">@product.Price.ToString("N0") đ</span>
+                                @if (product.Stock > 0)
+                                {
+                                    <span class="product-stock-compact">
+                                        <i class="bi bi-check-circle text-success"></i> Còn hàng
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="product-stock-compact text-danger">
+                                        <i class="bi bi-x-circle"></i> Hết hàng
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-4" data-aos="fade-up">
+            <a asp-controller="Products" asp-action="Index" class="btn btn-primary px-4">
+                <i class="bi bi-grid me-2"></i> Xem tất cả sản phẩm
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- WHY CHOOSE US SECTION -->
+<section class="why-choose-us-compact py-4">
+    <div class="container">
+        <div class="text-center mb-4" data-aos="fade-up">
+            <h2 class="section-title-compact">Tại sao chọn chúng tôi?</h2>
+            <p class="section-subtitle-compact">Cam kết mang đến trải nghiệm mua sắm tốt nhất</p>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-box-compact">
+                    <div class="feature-icon-compact bg-primary">
+                        <i class="bi bi-truck"></i>
+                    </div>
+                    <h6 class="feature-title-compact">Giao hàng nhanh</h6>
+                    <p class="feature-desc-compact">Giao hàng toàn quốc trong 2-3 ngày</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box-compact">
+                    <div class="feature-icon-compact bg-success">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h6 class="feature-title-compact">Chính hãng 100%</h6>
+                    <p class="feature-desc-compact">Cam kết sản phẩm chính hãng</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-box-compact">
+                    <div class="feature-icon-compact bg-warning">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </div>
+                    <h6 class="feature-title-compact">Đổi trả dễ dàng</h6>
+                    <p class="feature-desc-compact">Đổi trả miễn phí trong 7 ngày</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-box-compact">
+                    <div class="feature-icon-compact bg-danger">
+                        <i class="bi bi-headset"></i>
+                    </div>
+                    <h6 class="feature-title-compact">Hỗ trợ 24/7</h6>
+                    <p class="feature-desc-compact">Đội ngũ CSKH luôn sẵn sàng</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CUSTOM CSS - COMPACT VERSION -->
+<style>
+/* Hero Banner - COMPACT */
+.hero-banner-compact {
+    position: relative;
+    min-height: 400px; /* Giảm từ 600px → 400px */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&h=900&fit=crop');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 50px 0; /* Giảm từ 80px → 50px */
+}
+
+.hero-title-compact {
+    font-size: 2.5rem; /* Giảm từ 3.5rem → 2.5rem */
+    font-weight: 800;
+    color: white;
+    margin-bottom: 15px; /* Giảm từ 20px → 15px */
+    line-height: 1.2;
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #ffd89b, #19547b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle-compact {
+    font-size: 1rem; /* Giảm từ 1.3rem → 1rem */
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 20px; /* Giảm từ 30px → 20px */
+}
+
+.btn-hero-primary-compact {
+    background: white;
+    color: #667eea;
+    border: 2px solid white;
+    font-weight: 600; /* Giảm từ 700 → 600 */
+    padding: 10px 30px; /* Giảm từ 15px 40px → 10px 30px */
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.btn-hero-primary-compact:hover {
+    background: transparent;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.btn-hero-outline-compact {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    font-weight: 600;
+    padding: 10px 30px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.btn-hero-outline-compact:hover {
+    background: white;
+    color: #667eea;
+    transform: translateY(-2px);
+}
+
+/* Trust Badges - COMPACT */
+.trust-badges-compact {
+    display: flex;
+    gap: 20px; /* Giảm từ 30px → 20px */
+    flex-wrap: wrap;
+}
+
+.badge-item-compact {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Giảm từ 10px → 8px */
+    color: white;
+    font-size: 0.85rem; /* Giảm từ 0.95rem → 0.85rem */
+}
+
+.badge-item-compact i {
+    font-size: 1.2rem; /* Giảm từ 1.5rem → 1.2rem */
+}
+
+/* Section Styles - COMPACT */
+.section-title-compact {
+    font-size: 2rem; /* Giảm từ 2.5rem → 2rem */
+    font-weight: 800;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.section-subtitle-compact {
+    font-size: 0.95rem; /* Giảm từ 1.1rem → 0.95rem */
+    color: #7f8c8d;
+}
+
+/* Category Cards - COMPACT */
+.category-card-compact {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.category-image-compact {
+    position: relative;
+    border-radius: 12px; /* Giảm từ 15px → 12px */
+    overflow: hidden;
+    height: 320px; /* Giảm từ 400px → 320px */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.category-image-compact img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.category-overlay-compact {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px; /* Giảm từ 30px → 20px */
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.category-name-compact {
+    font-size: 1.2rem; /* Giảm từ 1.5rem → 1.2rem */
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.category-desc-compact {
+    font-size: 0.85rem; /* Giảm từ 0.9rem → 0.85rem */
+    margin-bottom: 8px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.category-btn-compact {
+    display: inline-block;
+    background: white;
+    color: #2c3e50;
+    padding: 6px 18px; /* Giảm từ 8px 20px → 6px 18px */
+    border-radius: 20px; /* Giảm từ 25px → 20px */
+    font-weight: 600;
+    font-size: 0.85rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.category-card-compact:hover .category-image-compact img {
+    transform: scale(1.1);
+}
+
+.category-card-compact:hover .category-desc-compact,
+.category-card-compact:hover .category-btn-compact {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Product Cards - COMPACT */
+.product-card-compact {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.product-card-compact:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.product-badge-compact {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-warning {
+    background: #f39c12;
+    color: white;
+}
+
+.badge-hot {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+}
+
+.product-image-wrapper-compact {
+    position: relative;
+    height: 240px; /* Giảm từ 300px → 240px */
+    overflow: hidden;
+}
+
+.product-image-compact {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card-compact:hover .product-image-compact {
+    transform: scale(1.1);
+}
+
+.product-overlay-compact {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.product-card-compact:hover .product-overlay-compact {
+    opacity: 1;
+}
+
+.btn-view-product-compact {
+    background: white;
+    color: #2c3e50;
+    padding: 10px 25px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.product-card-compact:hover .btn-view-product-compact {
+    transform: translateY(0);
+}
+
+.product-info-compact {
+    padding: 15px;
+}
+
+.product-category-compact {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.product-name-compact {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 12px;
+}
+
+.product-price-row-compact {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-price-compact {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #e74c3c;
+}
+
+.product-stock-compact {
+    font-size: 0.8rem;
+}
+
+/* Feature Boxes - COMPACT */
+.feature-box-compact {
+    text-align: center;
+    padding: 20px 15px;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.feature-box-compact:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+}
+
+.feature-icon-compact {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.feature-title-compact {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-size: 1rem;
+}
+
+.feature-desc-compact {
+    color: #7f8c8d;
+    margin-bottom: 0;
+    font-size: 0.85rem;
+}
+
+/* Responsive */
+(max-width: 768px) {
+    .hero-title-compact {
+        font-size: 1.8rem;
+    }
+    
+    .hero-subtitle-compact {
+        font-size: 0.9rem;
+    }
+    
+    .category-image-compact {
+        height: 250px;
+    }
+    
+    .section-title-compact {
+        font-size: 1.5rem;
+    }
+    
+    .hero-banner-compact {
+        min-height: 350px;
+    }
+}
+</style>
+
+<!-- AOS Animation Library -->
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        once: true
+    });
+</script>

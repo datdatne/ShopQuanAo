@@ -1,32 +1,36 @@
-
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace ShopQuanAo.Models
 {
     public class Product
     {
-        [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Tên sản phẩm là bắt buộc")]
-        public string Name { get; set; }
+        [Required(ErrorMessage = "Tên sản phẩm không được để trống")]
+        [StringLength(200)]
+        public string Name { get; set; } = "";
 
-        [Required(ErrorMessage = "Giá bán là bắt buộc")]
+        [Required(ErrorMessage = "Giá không được để trống")]
+        [Range(0, double.MaxValue, ErrorMessage = "Giá phải lớn hơn 0")]
         public decimal Price { get; set; }
+
+        [Required(ErrorMessage = "Số lượng không được để trống")]
+        [Range(0, int.MaxValue, ErrorMessage = "Số lượng phải >= 0")]
+        public int Stock { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng chọn danh mục")]
+        public int CategoryId { get; set; }
+
+        // CÁC FIELD NÀY CHO PHÉP NULL - KHÔNG BẮT BUỘC
+        public string? Description { get; set; }
+
+        public string? Size { get; set; }
+
+        public string? Material { get; set; }
 
         public string? ImageUrl { get; set; }
 
-        [Required(ErrorMessage = "Số lượng tồn kho là bắt buộc")]
-        public int Stock { get; set; }
-
-        // --- 3 TRƯỜNG MỚI THÊM ---
-        public string? Description { get; set; } // Mô tả sản phẩm
-        public string? Size { get; set; }        // Kích cỡ (S, M, L...)
-        public string? Material { get; set; }    // Chất liệu (Cotton, Kaki...)
-        // -------------------------
-
-        public int CategoryId { get; set; }
+        // Navigation property
         public virtual Category? Category { get; set; }
     }
 }

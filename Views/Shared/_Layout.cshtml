@@ -1,60 +1,100 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ShopQuanAo</title>
+
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ShopQuanAo.styles.css" asp-append-version="true" />
+
+    <style>
+        /* FIX: Loại bỏ khoảng trắng */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        main {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ShopQuanAo</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+    <!-- HEADER - ĐÃ XÓA TOP BAR -->
+    <header style="margin: 0; padding: 0;">
+        <!-- Main Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark py-3 main-navbar" style="margin: 0;">
+            <div class="container">
+                <!-- Brand -->
+                <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-bag-heart-fill me-2 fs-3"></i>
+                    <span class="fw-bold">ShopQuanAo</span>
+                </a>
+
+                <!-- Mobile Toggle -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <!-- Nav Items -->
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house-door me-1"></i> Trang chủ
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Products" asp-action="Index">Sản phẩm</a>
+                            <a class="nav-link" asp-controller="Products" asp-action="Index">
+                                <i class="bi bi-grid me-1"></i> Sản phẩm
+                            </a>
                         </li>
                         <li class="nav-item">
                             @await Component.InvokeAsync("Cart")
                         </li>
                     </ul>
-                    <ul class="navbar-nav">
+
+                    <!-- User Menu -->
+                    <ul class="navbar-nav align-items-center">
                         @if (Context.Session.GetInt32("CustomerId") != null)
                         {
-                            <!-- Đã đăng nhập -->
+                            <!-- Logged In -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown"
-                                   role="button" data-bs-toggle="dropdown">
-                                    <i class="bi bi-person-circle"></i>
-                                    @Context.Session.GetString("CustomerName")
+                                <a class="nav-link dropdown-toggle d-flex align-items-center user-dropdown" href="#"
+                                   id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                    <div class="user-avatar me-2">
+                                        <i class="bi bi-person-circle fs-4"></i>
+                                    </div>
+                                    <span class="d-none d-lg-inline">@Context.Session.GetString("CustomerName")</span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
                                     <li>
                                         <a class="dropdown-item" asp-controller="Account" asp-action="Profile">
-                                            <i class="bi bi-person"></i> Thông tin tài khoản
+                                            <i class="bi bi-person me-2"></i> Tài khoản của tôi
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" asp-controller="Order" asp-action="MyOrders">
-                                            <i class="bi bi-bag"></i> Đơn hàng của tôi
+                                            <i class="bi bi-bag-check me-2"></i> Đơn hàng của tôi
                                         </a>
                                     </li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
-                                        <a class="dropdown-item" asp-controller="Account" asp-action="Logout">
-                                            <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                                        <a class="dropdown-item text-danger" asp-controller="Account" asp-action="Logout">
+                                            <i class="bi bi-box-arrow-right me-2"></i> Đăng xuất
                                         </a>
                                     </li>
                                 </ul>
@@ -62,15 +102,17 @@
                         }
                         else
                         {
-                            <!-- Chưa đăng nhập -->
+                            <!-- Not Logged In -->
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">
-                                    <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">
+                                    <i class="bi bi-box-arrow-in-right me-1"></i>
+                                    <span class="d-none d-lg-inline">Đăng nhập</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">
-                                    <i class="bi bi-person-plus"></i> Đăng ký
+                                <a class="btn btn-register ms-2" asp-controller="Account" asp-action="Register">
+                                    <i class="bi bi-person-plus me-1"></i>
+                                    <span>Đăng ký</span>
                                 </a>
                             </li>
                         }
@@ -79,17 +121,17 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-        <main role="main" class="pb-3">
-            <div class="container">
 
-             
+    <!-- MAIN CONTENT -->
+    <main role="main" style="margin: 0; padding: 0;">
+        <!-- TempData Messages (chỉ hiển thị trên các trang KHÔNG phải Home) -->
+        @if (ViewContext.RouteData.Values["controller"]?.ToString() != "Home")
+        {
+            <div class="container mt-4">
                 @if (TempData["Success"] != null)
                 {
-                    <div class="alert alert-success alert-dismissible fade show mt-3">
+                    <div class="alert alert-success alert-dismissible fade show shadow-sm">
+                        <i class="bi bi-check-circle-fill me-2"></i>
                         @TempData["Success"]
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
@@ -97,7 +139,8 @@
 
                 @if (TempData["Error"] != null)
                 {
-                    <div class="alert alert-danger alert-dismissible fade show mt-3">
+                    <div class="alert alert-danger alert-dismissible fade show shadow-sm">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
                         @TempData["Error"]
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
@@ -105,26 +148,235 @@
 
                 @if (TempData["Warning"] != null)
                 {
-                    <div class="alert alert-warning alert-dismissible fade show mt-3">
+                    <div class="alert alert-warning alert-dismissible fade show shadow-sm">
+                        <i class="bi bi-info-circle-fill me-2"></i>
                         @TempData["Warning"]
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 }
-              
-
-                @RenderBody()
             </div>
-        </main>
-    </div>
+        }
 
-    <footer class="border-top footer text-muted">
+        @RenderBody()
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer mt-5 py-5 text-white" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);">
         <div class="container">
-            &copy; 2025 - ShopQuanAo - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row g-4">
+                <!-- About -->
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-bag-heart-fill me-2"></i> ShopQuanAo
+                    </h5>
+                    <p class="text-white-50">
+                        Thời trang chất lượng cao với giá cả hợp lý.
+                        Chúng tôi cam kết mang đến cho bạn những sản phẩm tốt nhất.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="btn btn-outline-light btn-sm me-2">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-light btn-sm me-2">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">Liên kết nhanh</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a asp-controller="Home" asp-action="Index" class="text-white-50 text-decoration-none">
+                                <i class="bi bi-chevron-right me-1"></i> Trang chủ
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a asp-controller="Products" asp-action="Index" class="text-white-50 text-decoration-none">
+                                <i class="bi bi-chevron-right me-1"></i> Sản phẩm
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a asp-controller="Home" asp-action="Privacy" class="text-white-50 text-decoration-none">
+                                <i class="bi bi-chevron-right me-1"></i> Chính sách
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">Liên hệ</h5>
+                    <ul class="list-unstyled text-white-50">
+                        <li class="mb-2">
+                            <i class="bi bi-geo-alt me-2"></i> 123 Đường ABC, Quận 1, TP.HCM
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-telephone me-2"></i> 1900-xxxx
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-envelope me-2"></i> support@shopquanao.com
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="my-4 bg-white opacity-25">
+
+            <div class="text-center text-white-50">
+                <small>&copy; @DateTime.Now.Year ShopQuanAo. All rights reserved.</small>
+            </div>
         </div>
     </footer>
+
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+<style>
+    /* Main Navbar */
+    .main-navbar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        margin: 0 !important;
+    }
+
+    /* Brand */
+    .navbar-brand {
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+    /* Nav Links */
+    .nav-link {
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+    /* Register Button */
+    .btn-register {
+        background: white;
+        color: #667eea;
+        border: 2px solid white;
+        border-radius: 25px;
+        padding: 8px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .btn-register:hover {
+            background: transparent;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+    /* User Avatar */
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .user-dropdown {
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 25px;
+        padding: 5px 15px !important;
+        transition: all 0.3s ease;
+    }
+
+        .user-dropdown:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: white;
+        }
+
+    /* Dropdown Menu */
+    .dropdown-menu {
+        border-radius: 15px;
+        padding: 10px;
+        margin-top: 10px;
+        animation: fadeInDown 0.3s ease;
+    }
+
+    .dropdown-item {
+        border-radius: 8px;
+        padding: 10px 15px;
+        transition: all 0.3s ease;
+    }
+
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateX(5px);
+        }
+
+    /* Animation */
+     fadeInDown {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    /* Social Links */
+    .social-links .btn {
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Responsive */
+     (max-width: 991px) {
+        .btn-register
+
+    {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    }</style>

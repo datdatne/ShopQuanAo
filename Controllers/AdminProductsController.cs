@@ -68,35 +68,49 @@ namespace ShopQuanAo.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Product product, IFormFile? imageFile)
+        public async Task<IActionResult> Create(Product product)
         {
-            ModelState.Remove("ImageUrl");
-            ModelState.Remove("Category");
-
-            if (!string.IsNullOrEmpty(product.Name) && _context.Products.Any(p => p.Name == product.Name.Trim()))
+            try
             {
-                ModelState.AddModelError("Name", "Tên sản phẩm này đã tồn tại!");
-            }
+                // Remove validation
+                ModelState.Remove("Category");
 
-            if (ModelState.IsValid)
-            {
-                if (imageFile != null)
+                if (!ModelState.IsValid)
                 {
-                    string fileName = Guid.NewGuid().ToString() + "-" + imageFile.FileName;
-                    string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "images/products");
-                    if (!Directory.Exists(uploadDir)) Directory.CreateDirectory(uploadDir);
-                    using (var stream = new FileStream(Path.Combine(uploadDir, fileName), FileMode.Create)) { await imageFile.CopyToAsync(stream); }
-                    product.ImageUrl = "/images/products/" + fileName;
+                    ViewBag.CategoryId = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+                    return View(product);
                 }
-                else { product.ImageUrl = ""; }
 
-                _context.Add(product);
+                // Set giá trị mặc định
+                product.Description = product.Description ?? "";
+                product.Size = product.Size ?? "";
+                product.Material = product.Material ?? "";
+
+                // Xử lý ImageUrl
+                if (string.IsNullOrEmpty(product.ImageUrl))
+                {
+                    product.ImageUrl = ""; // Để trống nếu không nhập
+                }
+                else
+                {
+                    // Trim URL và đảm bảo là URL hợp lệ
+                    product.ImageUrl = product.ImageUrl.Trim();
+                }
+
+                // Lưu vào database
+                _context.Products.Add(product);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Thêm sản phẩm thành công!";
+
+                TempData["Success"] = "Them san pham thanh cong!";
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.CategoryId = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Loi: {ex.Message}");
+                TempData["Error"] = $"Co loi: {ex.Message}";
+                ViewBag.CategoryId = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+                return View(product);
+            }
         }
 
         // 4. SỬA
@@ -178,4 +192,5 @@ namespace ShopQuanAo.Controllers
             return RedirectToAction(nameof(Index));
         }
     }
+
 }

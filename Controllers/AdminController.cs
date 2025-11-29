@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore; // Cần dòng này để dùng Include/OrderBy
 using ShopQuanAo.Data;
 using ShopQuanAo.Models;
-using BCrypt.Net;
 
 
 namespace ShopQuanAo.Controllers
